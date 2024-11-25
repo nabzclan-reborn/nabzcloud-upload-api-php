@@ -5,8 +5,9 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-define("key1", "key here 1");
-define("key2", "key here 2");
+
+define("key1", "key here 1"); // add key 2
+define("key2", "key here 2"); // add key 2
 
 function apiToken() {
   
@@ -82,7 +83,11 @@ function uploadFile() {
   
   curl_close($curl);
 
-  print_r($response);
+  $decoded = json_decode($response, true);
+  if (isset($decoded['data']['url'])) {
+    $decoded['data']['url'] = stripslashes($decoded['data']['url']);
+  }
+  echo "<pre>" . json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "</pre>";
 
 }
 
